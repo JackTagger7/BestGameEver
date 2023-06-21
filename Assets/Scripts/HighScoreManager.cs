@@ -21,14 +21,20 @@ public class HighScoreManager : MonoBehaviour
             // Update the high score value
             highScore = currentScore;
 
-            highScoreText.text = "New High Score!: " + highScore.ToString();
+            // Set the text color to indicate a new high score
+            highScoreText.text = "New High Score! " + highScore.ToString();
+            highScoreText.color = Color.yellow;
 
             // Save the new high score to PlayerPrefs
             PlayerPrefs.SetInt("HighScore", highScore);
-        } else {
+        }
+        else
+        {
             highScoreText.text = "Previous High Score: " + highScore.ToString();
+            highScoreText.color = Color.white;
         }
     }
+
 
     public void ShowHighScore()
     {
