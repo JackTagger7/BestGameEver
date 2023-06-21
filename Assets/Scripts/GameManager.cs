@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject playButton;
     public GameObject gameOver;
+    public HighScoreManager highScoreManager;
     public int score { get; private set; }
 
     public AudioSource audioSource;
@@ -21,12 +22,15 @@ public class GameManager : MonoBehaviour
 
         player = FindObjectOfType<Player>();
         spawner = FindObjectOfType<Spawner>();
+        highScoreManager = FindObjectOfType<HighScoreManager>();
+        highScoreManager.HideHighScore();
 
         Pause();
     }
 
     public void Play()
     {
+        highScoreManager.HideHighScore();
         score = 0;
         scoreText.text = score.ToString();
 
@@ -46,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        highScoreManager.ShowHighScore();
         playButton.SetActive(true);
         gameOver.SetActive(true);
 
@@ -73,7 +78,6 @@ public class GameManager : MonoBehaviour
             audioSource.PlayOneShot(scoreIncreaseSound);
         }
 
-        // Call the UpdateHighScore method from the HighScoreManager
-        FindObjectOfType<HighScoreManager>().UpdateHighScore(score);
+        highScoreManager.UpdateHighScore(score);
     }
 }

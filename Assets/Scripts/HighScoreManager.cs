@@ -21,14 +21,17 @@ public class HighScoreManager : MonoBehaviour
             // Update the high score value
             highScore = currentScore;
 
+            highScoreText.text = "New High Score!: " + highScore.ToString();
+
             // Save the new high score to PlayerPrefs
             PlayerPrefs.SetInt("HighScore", highScore);
+        } else {
+            highScoreText.text = "Previous High Score: " + highScore.ToString();
         }
     }
 
     public void ShowHighScore()
     {
-        highScoreText.text = "High Score: " + highScore.ToString();
         highScoreText.gameObject.SetActive(true);
     }
 
