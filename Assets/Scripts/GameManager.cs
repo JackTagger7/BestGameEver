@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOver;
     public HighScoreManager highScoreManager;
     public int score { get; private set; }
+    public bool gameStarted { get; private set; }
 
     public AudioSource audioSource;
     public AudioClip scoreIncreaseSound;
@@ -18,8 +19,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
-
         player = FindObjectOfType<Player>();
         spawner = FindObjectOfType<Spawner>();
         highScoreManager = FindObjectOfType<HighScoreManager>();
@@ -28,7 +27,15 @@ public class GameManager : MonoBehaviour
         Pause();
     }
 
-    public void Play()
+    private void Update()
+    {
+        if (!gameStarted && Input.GetMouseButtonDown(0))
+        {
+            StartGame();
+        }
+    }
+
+    public void StartGame()
     {
         highScoreManager.HideHighScore();
         score = 0;
@@ -46,6 +53,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(pipes[i].gameObject);
         }
+        PowerUPScript[] powerUPScripts = FindObjectsOfType<PowerUPScript>();
+
+        for (int i = 0;i < powerUPScripts.Length; i++)
+        {
+            Destroy(powerUPScripts[i].gameObject);  
+        }
+        gameStarted = true;
     }
 
     public void GameOver()
@@ -60,6 +74,8 @@ public class GameManager : MonoBehaviour
         {
             audioSource.PlayOneShot(gameOverSound);
         }
+
+        gameStarted = false;
     }
 
     public void Pause()

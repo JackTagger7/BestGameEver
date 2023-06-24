@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Flappy Bird.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Trash.unity
+    guid: 8053791e2e8ba2c428df27606d38a787
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 82a509301667c434589df1ea0f1a885e
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 82a509301667c434589df1ea0f1a885e
+  - enabled: 0
+    path: Assets/Scenes/Fake.unity
+    guid: 39f8c50f5eef36241a48626b1df62954
+  - enabled: 1
+    path: Assets/Scenes/Flappy Bird (ALT).unity
+    guid: 40ea0be84b6cf4646ad7d2f269577569
   m_configObjects: {}
