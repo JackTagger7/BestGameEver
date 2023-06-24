@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class Player : MonoBehaviour
     public Sprite[] sprites;
     private int spriteIndex;
 
+    public float powerUpSize = 3f;
     public float strength = 5f;
     public float gravity = -9.81f;
     public float tilt = 5f;
@@ -13,11 +15,8 @@ public class Player : MonoBehaviour
     private Vector3 direction;
     private AudioSource jumpAudioSource;
 
-    private bool sizeIncreased = false; // Flag to track if player size has increased
-    private bool resetSizePending = false; // Flag to track if size reset is pending
     private float sizeResetDelay = 3f; // Delay in seconds before resetting the size
-    private bool canDestroy = false;
-
+    private bool poweredUp = false;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -40,8 +39,8 @@ public class Player : MonoBehaviour
         position.y = 0f;
         transform.position = position;
         direction = Vector3.zero;
-        sizeIncreased = false; // Reset the sizeIncreased flag
-        ResetPlayerSize(); // Reset the player's size
+        poweredUp = false; // Reset the sizeIncreased flag
+        DeactivatePowerUp(); // Reset the player's size
     }
 
     private void Update()
@@ -55,19 +54,21 @@ public class Player : MonoBehaviour
 
         // Apply gravity and update the position
         direction.y += gravity * Time.deltaTime;
-        transform.position += direction * Time.deltaTime;
+        Vector2 position = transform.position + direction * Time.deltaTime;
+        float y = poweredUp ? Mathf.Max(position.y, -3.2f) : position.y ; 
+        transform.position = new Vector2(position.x, y);
 
         // Tilt the bird based on the direction
         Vector3 rotation = transform.eulerAngles;
         rotation.z = direction.y * tilt;
         transform.eulerAngles = rotation;
 
-        if (resetSizePending)
+        if (poweredUp)
         {
             sizeResetDelay -= Time.deltaTime;
             if (sizeResetDelay <= 0f)
             {
-                ResetPlayerSize();
+                DeactivatePowerUp();
                 
             }
         }
@@ -92,22 +93,22 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            if (sizeIncreased)
+            if (poweredUp)
             {
                 Destroy(other.gameObject);
             }
             else
             {
                 FindObjectOfType<GameManager>().GameOver();
-                ResetPlayerSize(); // Reset the player's size on collision with an obstacle
+                DeactivatePowerUp(); // Reset the player's size on collision with an obstacle
             }
         }
         else if (other.gameObject.CompareTag("GroundTag"))
         {
-            if (!sizeIncreased)
+            if (!poweredUp)
             {
                 FindObjectOfType<GameManager>().GameOver();
-                ResetPlayerSize(); // Reset the player's size on collision with an obstacle
+                DeactivatePowerUp(); // Reset the player's size on collision with an obstacle
             }
 
         }
@@ -117,7 +118,8 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("poweruptag"))
         {
-           ActivatePowerUP();   
+           ActivatePowerUp();
+            Destroy(other.gameObject);
         }
     }
 
@@ -126,25 +128,16 @@ public class Player : MonoBehaviour
         if (jumpAudioSource != null && jumpAudioSource.clip != null)
             jumpAudioSource.PlayOneShot(jumpAudioSource.clip);
     }
-
-    private void IncreasePlayerSize()
-    {
-        transform.localScale = new Vector3(1.5f, 1.5f, 1.5f); // Increase the player's scale
-        sizeIncreased = true; // Set the sizeIncreased flag to true
-        resetSizePending = true; // Set the resetSizePending flag to true
-        sizeResetDelay = 3f; // Reset the size reset delay
-    }
-
-    private void ResetPlayerSize()
+    private void DeactivatePowerUp()
     {
         transform.localScale = Vector3.one; // Reset the player's size
-        canDestroy = false; 
-        resetSizePending = false;
+        poweredUp = false; 
     }
 
-    public void ActivatePowerUP()
+    public void ActivatePowerUp()
     {
-        IncreasePlayerSize();
-        canDestroy = true;
+        sizeResetDelay = 3f; // Reset the size reset delay
+        transform.localScale = new Vector3(powerUpSize, powerUpSize, powerUpSize); // Increase the player's scale
+        poweredUp = true;
     }
 }

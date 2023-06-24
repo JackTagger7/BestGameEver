@@ -7,16 +7,18 @@ public class Spawner : MonoBehaviour
     public float spawnRate = 1f;
     public float minHeight = -1f;
     public float maxHeight = 2f;
+    private int minPowerFreq = 0;
 
-    private void OnEnable()
-    {
-        InvokeRepeating(nameof(SpawnPipe), spawnRate, spawnRate);
-        InvokeRepeating(nameof(SpawnPowerUP), spawnRate / 2, spawnRate);
-    }
 
-    private void OnDisable()
+    public void StopSpawning()
     {
         CancelInvoke(nameof(SpawnPipe));
+        CancelInvoke(nameof(SpawnPowerUP));
+    }
+    public void StartSpawning()
+    {
+        InvokeRepeating(nameof(SpawnPipe), spawnRate, spawnRate);
+        InvokeRepeating(nameof(SpawnPowerUP), (spawnRate / 2) + (spawnRate * 10), spawnRate);
     }
 
     private void SpawnPipe()
@@ -26,12 +28,18 @@ public class Spawner : MonoBehaviour
     }
     private void SpawnPowerUP()
     {
-        float roll = Random.Range(0f, 1f);
-        if (roll <= 0.2f)
+        if (minPowerFreq <= 0)
         {
-            GameObject powerupInstance = Instantiate(powerup, transform.position, Quaternion.identity);
-            powerupInstance.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+
+            float roll = Random.Range(0f, 1f);
+            if (roll <= 0.2f)
+            {
+                minPowerFreq = 15;
+                GameObject powerupInstance = Instantiate(powerup, transform.position, Quaternion.identity);
+                powerupInstance.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+            }
         }
+        minPowerFreq -= 1;
     }
 
 }

@@ -27,16 +27,9 @@ public class GameManager : MonoBehaviour
         Pause();
     }
 
-    private void Update()
-    {
-        if (!gameStarted && Input.GetMouseButtonDown(0))
-        {
-            StartGame();
-        }
-    }
-
     public void StartGame()
     {
+        spawner.StartSpawning();
         highScoreManager.HideHighScore();
         score = 0;
         scoreText.text = score.ToString();
@@ -67,6 +60,7 @@ public class GameManager : MonoBehaviour
         highScoreManager.ShowHighScore();
         playButton.SetActive(true);
         gameOver.SetActive(true);
+        spawner.StopSpawning();
 
         Pause();
 

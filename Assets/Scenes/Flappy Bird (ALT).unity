@@ -283,7 +283,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &536744080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -763,6 +763,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4b4a57de377138e4e8369d8145550062, type: 3}
   - {fileID: 21300000, guid: 47a1c54c1427e10458e1e21315a00666, type: 3}
   - {fileID: 21300000, guid: 477a76ff29832b2499b9244de7070326, type: 3}
+  powerUpSize: 3
   strength: 7
   gravity: -20
   tilt: 5
@@ -1383,7 +1384,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 141342619}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1670,7 +1671,7 @@ GameObject:
   - component: {fileID: 1888487792}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Obstacle
+  m_TagString: GroundTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
