@@ -157,8 +157,8 @@ MonoBehaviour:
   gameOver: {fileID: 536744079}
   highScoreManager: {fileID: 0}
   audioSource: {fileID: 772714140}
-  scoreIncreaseSound: {fileID: 8300000, guid: 2890c3ad48b1d084fb672b52c76a38bb, type: 3}
-  gameOverSound: {fileID: 8300000, guid: ef02c68d28ed7b2418bee8e8bf7d2c2e, type: 3}
+  scoreIncreaseSound: {fileID: 8300000, guid: cf7863848bad7da4eb5ba026c2a76eb6, type: 3}
+  gameOverSound: {fileID: 8300000, guid: 367443bbddb34604c9bc568c2e44556a, type: 3}
 --- !u!4 &141342620
 Transform:
   m_ObjectHideFlags: 0
@@ -494,7 +494,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772714139}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2890c3ad48b1d084fb672b52c76a38bb, type: 3}
@@ -709,7 +709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipe: {fileID: 3126259407344156057, guid: 4190d0e2bbfd68c4ea6e6e41e37c04bb, type: 3}
   powerup: {fileID: 5392648932455915150, guid: ae5027bc7d39500459b5ae5c1270e34b, type: 3}
-  spawnRate: 1
+  spawnRate: 1.3
   minHeight: -2
   maxHeight: 2
 --- !u!4 &1158307002
@@ -763,7 +763,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4b4a57de377138e4e8369d8145550062, type: 3}
   - {fileID: 21300000, guid: 47a1c54c1427e10458e1e21315a00666, type: 3}
   - {fileID: 21300000, guid: 477a76ff29832b2499b9244de7070326, type: 3}
-  powerUpSize: 3
+  powerUpSize: 10
   strength: 7
   gravity: -20
   tilt: 5
