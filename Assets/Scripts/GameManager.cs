@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip scoreIncreaseSound;
     public AudioClip gameOverSound;
+    public AudioClip score20Sound;
 
     private void Awake()
     {
@@ -86,6 +87,10 @@ public class GameManager : MonoBehaviour
         if (scoreIncreaseSound != null)
         {
             audioSource.PlayOneShot(scoreIncreaseSound);
+        }
+        if (score == 20 && score20Sound != null)
+        {
+            audioSource.PlayOneShot(score20Sound);
         }
 
         highScoreManager.UpdateHighScore(score);

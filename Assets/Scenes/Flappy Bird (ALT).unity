@@ -159,6 +159,7 @@ MonoBehaviour:
   audioSource: {fileID: 772714140}
   scoreIncreaseSound: {fileID: 8300000, guid: cf7863848bad7da4eb5ba026c2a76eb6, type: 3}
   gameOverSound: {fileID: 8300000, guid: 367443bbddb34604c9bc568c2e44556a, type: 3}
+  score20Sound: {fileID: 8300000, guid: 567337516d8625045aafbe8c0dba1379, type: 3}
 --- !u!4 &141342620
 Transform:
   m_ObjectHideFlags: 0
@@ -763,10 +764,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4b4a57de377138e4e8369d8145550062, type: 3}
   - {fileID: 21300000, guid: 47a1c54c1427e10458e1e21315a00666, type: 3}
   - {fileID: 21300000, guid: 477a76ff29832b2499b9244de7070326, type: 3}
-  powerUpSize: 10
+  powerUpSize: 7
   strength: 7
   gravity: -20
   tilt: 5
+  powerUpDuration: 10
+  powerUpCollisionSound: {fileID: 8300000, guid: f347a4c0436a61842a155c7880ac9721,
+    type: 3}
 --- !u!58 &1187104769
 CircleCollider2D:
   m_ObjectHideFlags: 0

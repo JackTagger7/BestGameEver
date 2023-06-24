@@ -11,9 +11,12 @@ public class Player : MonoBehaviour
     public float strength = 5f;
     public float gravity = -9.81f;
     public float tilt = 5f;
+    public float powerUpDuration;
 
     private Vector3 direction;
     private AudioSource jumpAudioSource;
+    public AudioClip powerUpCollisionSound;
+    private AudioSource powerUpAudioSource;
 
     private float sizeResetDelay = 3f; // Delay in seconds before resetting the size
     private bool poweredUp = false;
@@ -21,6 +24,10 @@ public class Player : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         jumpAudioSource = transform.Find("JumpAudio").GetComponent<AudioSource>();
+
+        powerUpAudioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component for power-up collision sound
+        powerUpAudioSource.playOnAwake = false;
+        powerUpAudioSource.spatialBlend = 0f;
     }
 
     private void Start()
@@ -120,6 +127,10 @@ public class Player : MonoBehaviour
         {
            ActivatePowerUp();
             Destroy(other.gameObject);
+            if (powerUpCollisionSound != null)
+            {
+                powerUpAudioSource.PlayOneShot(powerUpCollisionSound);
+            }
         }
     }
 
@@ -136,7 +147,7 @@ public class Player : MonoBehaviour
 
     public void ActivatePowerUp()
     {
-        sizeResetDelay = 3f; // Reset the size reset delay
+        sizeResetDelay = powerUpDuration; // Reset the size reset delay
         transform.localScale = new Vector3(powerUpSize, powerUpSize, powerUpSize); // Increase the player's scale
         poweredUp = true;
     }
