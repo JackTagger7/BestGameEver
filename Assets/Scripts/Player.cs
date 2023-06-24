@@ -12,14 +12,19 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;
     public float tilt = 5f;
     public float powerUpDuration;
+    public float sPowerUpSize =3f;
+    public float sPowerUpDuration;
 
     private Vector3 direction;
     private AudioSource jumpAudioSource;
     public AudioClip powerUpCollisionSound;
     private AudioSource powerUpAudioSource;
+    private AudioClip sPowerUpAudioSource;
+    public AudioClip sPowerUpCollisionSound;
 
     private float sizeResetDelay = 3f; // Delay in seconds before resetting the size
     private bool poweredUp = false;
+    private bool sPoweredUp = false;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -28,6 +33,7 @@ public class Player : MonoBehaviour
         powerUpAudioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component for power-up collision sound
         powerUpAudioSource.playOnAwake = false;
         powerUpAudioSource.spatialBlend = 0f;
+    
     }
 
     private void Start()
@@ -78,6 +84,14 @@ public class Player : MonoBehaviour
                 DeactivatePowerUp();
                 
             }
+        }
+        if (sPoweredUp)
+        {
+            sizeResetDelay += Time.deltaTime;
+            if(sizeResetDelay <= 0f)
+            { 
+                DeactivateSPowerUp(); 
+            }    
         }
     }
 
@@ -131,6 +145,11 @@ public class Player : MonoBehaviour
             {
                 powerUpAudioSource.PlayOneShot(powerUpCollisionSound);
             }
+
+        }
+        else if (other.gameObject.CompareTag("SPowerUpTag"))
+        {
+            ActivateSPowerUp();  
         }
     }
 
@@ -144,11 +163,22 @@ public class Player : MonoBehaviour
         transform.localScale = Vector3.one; // Reset the player's size
         poweredUp = false; 
     }
+    private void DeactivateSPowerUp()
+    {
+        transform.localScale = Vector3.one; // Reset the player's size
+        poweredUp = false;
+    }
 
     public void ActivatePowerUp()
     {
         sizeResetDelay = powerUpDuration; // Reset the size reset delay
         transform.localScale = new Vector3(powerUpSize, powerUpSize, powerUpSize); // Increase the player's scale
         poweredUp = true;
+    }
+    public void ActivateSPowerUp()
+    {
+        sizeResetDelay = sPowerUpDuration; // Reset the size reset delay
+        transform.localScale = new Vector3(sPowerUpSize, sPowerUpSize, sPowerUpSize); // Increase the player's scale
+        sPoweredUp = true;
     }
 }

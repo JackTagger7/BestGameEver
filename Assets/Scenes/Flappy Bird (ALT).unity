@@ -710,6 +710,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipe: {fileID: 3126259407344156057, guid: 4190d0e2bbfd68c4ea6e6e41e37c04bb, type: 3}
   powerup: {fileID: 5392648932455915150, guid: ae5027bc7d39500459b5ae5c1270e34b, type: 3}
+  spowerup: {fileID: 5530924727382116004, guid: a4d3d75857a14e14081bd56482af54c9,
+    type: 3}
   spawnRate: 1.3
   minHeight: -2
   maxHeight: 2
@@ -769,8 +771,11 @@ MonoBehaviour:
   gravity: -20
   tilt: 5
   powerUpDuration: 10
+  sPowerUpSize: 0.5
+  sPowerUpDuration: 7
   powerUpCollisionSound: {fileID: 8300000, guid: f347a4c0436a61842a155c7880ac9721,
     type: 3}
+  sPowerUpCollisionSound: {fileID: 0}
 --- !u!58 &1187104769
 CircleCollider2D:
   m_ObjectHideFlags: 0

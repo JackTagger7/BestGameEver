@@ -53,7 +53,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(powerUPScripts[i].gameObject);  
         }
-        gameStarted = true;
+        SPowerUpScript[] sPowerUpScripts = FindObjectsOfType<SPowerUpScript>();
+
+        for (int i = 0;i<sPowerUpScripts.Length;i++)
+        {
+            Destroy(sPowerUpScripts[i].gameObject);
+        }
+        gameStarted = true;   
     }
 
     public void GameOver()

@@ -8,6 +8,8 @@ TagManager:
   - Scoring
   - poweruptag
   - GroundTag
+  - SPowerUp
+  - SPowerUpTag
   layers:
   - Default
   - TransparentFX
