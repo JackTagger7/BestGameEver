@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
@@ -6,6 +7,7 @@ public class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     private int spriteIndex;
+    public Text countDownText;
 
     public float powerUpSize = 3f;
     public float strength = 5f;
@@ -19,10 +21,10 @@ public class Player : MonoBehaviour
     private AudioSource jumpAudioSource;
     public AudioClip powerUpCollisionSound;
     private AudioSource powerUpAudioSource;
-    private AudioClip sPowerUpAudioSource;
+    private AudioSource sPowerUpAudioSource;
     public AudioClip sPowerUpCollisionSound;
 
-    private float sizeResetDelay = 3f; // Delay in seconds before resetting the size
+    private float sizeResetDelay = 0f; // Delay in seconds before resetting the size
     private bool poweredUp = false;
     private bool sPoweredUp = false;
     private void Awake()
@@ -33,12 +35,16 @@ public class Player : MonoBehaviour
         powerUpAudioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component for power-up collision sound
         powerUpAudioSource.playOnAwake = false;
         powerUpAudioSource.spatialBlend = 0f;
-    
+        sPowerUpAudioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component for spower-up collision sound
+        sPowerUpAudioSource.playOnAwake = false;
+        sPowerUpAudioSource.spatialBlend = 0f;
+        InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
+
     }
 
     private void Start()
     {
-        InvokeRepeating(nameof(AnimateSprite), 0.15f, 0.15f);
+        
     }
 
     private void OnEnable()
@@ -64,6 +70,12 @@ public class Player : MonoBehaviour
             direction = Vector3.up * strength;
             PlayJumpSound();
         }
+        if (sizeResetDelay >0 )
+        {
+            countDownText.text = sizeResetDelay.ToString("0.0"); 
+        }
+        else { countDownText.text = ""; }
+        Debug.Log("update");
 
         // Apply gravity and update the position
         direction.y += gravity * Time.deltaTime;
@@ -87,8 +99,8 @@ public class Player : MonoBehaviour
         }
         if (sPoweredUp)
         {
-            sizeResetDelay += Time.deltaTime;
-            if(sizeResetDelay <= 0f)
+            sizeResetDelay -= Time.deltaTime;
+            if (sizeResetDelay <= 0f)
             { 
                 DeactivateSPowerUp(); 
             }    
@@ -149,7 +161,12 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("SPowerUpTag"))
         {
-            ActivateSPowerUp();  
+            ActivateSPowerUp();
+            Destroy(other.gameObject);
+            if (sPowerUpCollisionSound != null)
+            {
+                sPowerUpAudioSource.PlayOneShot(sPowerUpCollisionSound);
+            }
         }
     }
 
@@ -166,17 +183,19 @@ public class Player : MonoBehaviour
     private void DeactivateSPowerUp()
     {
         transform.localScale = Vector3.one; // Reset the player's size
-        poweredUp = false;
+        sPoweredUp = false;
     }
 
     public void ActivatePowerUp()
     {
+        DeactivateSPowerUp();
         sizeResetDelay = powerUpDuration; // Reset the size reset delay
         transform.localScale = new Vector3(powerUpSize, powerUpSize, powerUpSize); // Increase the player's scale
         poweredUp = true;
     }
     public void ActivateSPowerUp()
     {
+        DeactivatePowerUp();
         sizeResetDelay = sPowerUpDuration; // Reset the size reset delay
         transform.localScale = new Vector3(sPowerUpSize, sPowerUpSize, sPowerUpSize); // Increase the player's scale
         sPoweredUp = true;
