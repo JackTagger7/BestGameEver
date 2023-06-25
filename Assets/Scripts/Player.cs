@@ -14,9 +14,10 @@ public class Player : MonoBehaviour
     public float gravity = -9.81f;
     public float tilt = 5f;
     public float powerUpDuration;
-    public float sPowerUpSize =3f;
+    public float sPowerUpSize = 3f;
     public float sPowerUpDuration;
     public bool paused = true;
+    public UnityEngine.UI.Image countdownImage;
 
     private Vector3 direction;
     private AudioSource jumpAudioSource;
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     private void OnEnable()
@@ -65,18 +66,24 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-       
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             direction = Vector3.up * strength;
             PlayJumpSound();
         }
-        if (sizeResetDelay >0 )
+        if (sizeResetDelay > 0)
         {
-            countDownText.text = sizeResetDelay.ToString("0.0"); 
+            countDownText.text = sizeResetDelay.ToString("0.0");
+            countdownImage.GetComponent<UnityEngine.UI.Image>().enabled = true;
         }
-        else { countDownText.text = ""; }
-       
+        else
+        {
+            countDownText.text = "";
+            countdownImage.GetComponent<UnityEngine.UI.Image>().enabled = false;
+        }
+
+
         if (!paused)
         {
             // Apply gravity and update the position
@@ -99,16 +106,16 @@ public class Player : MonoBehaviour
             if (sizeResetDelay <= 0f)
             {
                 DeactivatePowerUp();
-                
+
             }
         }
         if (sPoweredUp)
         {
             sizeResetDelay -= Time.deltaTime;
             if (sizeResetDelay <= 0f)
-            { 
-                DeactivateSPowerUp(); 
-            }    
+            {
+                DeactivateSPowerUp();
+            }
         }
     }
 
@@ -150,13 +157,13 @@ public class Player : MonoBehaviour
             }
 
         }
-        else if(other.gameObject.CompareTag("Scoring"))
+        else if (other.gameObject.CompareTag("Scoring"))
         {
             FindObjectOfType<GameManager>().IncreaseScore();
         }
         else if (other.gameObject.CompareTag("poweruptag"))
         {
-           ActivatePowerUp();
+            ActivatePowerUp();
             Destroy(other.gameObject);
             if (powerUpCollisionSound != null)
             {
@@ -183,7 +190,7 @@ public class Player : MonoBehaviour
     private void DeactivatePowerUp()
     {
         transform.localScale = Vector3.one; // Reset the player's size
-        poweredUp = false; 
+        poweredUp = false;
     }
     private void DeactivateSPowerUp()
     {

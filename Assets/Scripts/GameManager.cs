@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,36 @@ public class GameManager : MonoBehaviour
     public AudioClip scoreIncreaseSound;
     public AudioClip gameOverSound;
     public AudioClip score20Sound;
+    private bool dead = false;
+    public GameObject logo;    
+    public void MainMenu ()
+    {
+        dead = false;
+        highScoreManager.HideHighScore();
+        score = 0;
+        scoreText.text = score.ToString();
+        Time.timeScale = 1f;
+        logo.SetActive(true);
+
+
+        playButton.SetActive(true);
+        gameOver.SetActive(false);
+        player.transform.position = Vector3.zero;
+        player.transform.rotation = Quaternion.identity;
+        ClearObjects(); 
+    }
+    public void Play()
+    {
+        if (dead)
+        {
+            MainMenu();
+        }
+        else
+        {
+            StartGame();
+        }
+    }
+
 
     private void Awake()
     {
@@ -39,9 +70,16 @@ public class GameManager : MonoBehaviour
 
         playButton.SetActive(false);
         gameOver.SetActive(false);
+        logo.SetActive(false);
 
         player.paused = false;
 
+        ClearObjects();
+        gameStarted = true;
+    }
+
+    private static void ClearObjects()
+    {
         Pipes[] pipes = FindObjectsOfType<Pipes>();
 
         for (int i = 0; i < pipes.Length; i++)
@@ -50,17 +88,16 @@ public class GameManager : MonoBehaviour
         }
         PowerUPScript[] powerUPScripts = FindObjectsOfType<PowerUPScript>();
 
-        for (int i = 0;i < powerUPScripts.Length; i++)
+        for (int i = 0; i < powerUPScripts.Length; i++)
         {
-            Destroy(powerUPScripts[i].gameObject);  
+            Destroy(powerUPScripts[i].gameObject);
         }
         SPowerUpScript[] sPowerUpScripts = FindObjectsOfType<SPowerUpScript>();
 
-        for (int i = 0;i<sPowerUpScripts.Length;i++)
+        for (int i = 0; i < sPowerUpScripts.Length; i++)
         {
             Destroy(sPowerUpScripts[i].gameObject);
         }
-        gameStarted = true;   
     }
 
     public void GameOver()
@@ -70,6 +107,7 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         spawner.StopSpawning();
         Time.timeScale = 0f;
+        dead = true;
 
         Pause();
 
@@ -83,7 +121,7 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-    player.paused = true;
+        player.paused = true;
     }
 
     public void IncreaseScore()
