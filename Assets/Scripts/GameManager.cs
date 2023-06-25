@@ -34,12 +34,13 @@ public class GameManager : MonoBehaviour
         highScoreManager.HideHighScore();
         score = 0;
         scoreText.text = score.ToString();
+        Time.timeScale = 1f;
+
 
         playButton.SetActive(false);
         gameOver.SetActive(false);
 
-        Time.timeScale = 1f;
-        player.enabled = true;
+        player.paused = false;
 
         Pipes[] pipes = FindObjectsOfType<Pipes>();
 
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(true);
         gameOver.SetActive(true);
         spawner.StopSpawning();
+        Time.timeScale = 0f;
 
         Pause();
 
@@ -81,8 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        Time.timeScale = 0f;
-        player.enabled = false;
+    player.paused = true;
     }
 
     public void IncreaseScore()

@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public float powerUpDuration;
     public float sPowerUpSize =3f;
     public float sPowerUpDuration;
+    public bool paused = true;
 
     private Vector3 direction;
     private AudioSource jumpAudioSource;
@@ -75,18 +76,22 @@ public class Player : MonoBehaviour
             countDownText.text = sizeResetDelay.ToString("0.0"); 
         }
         else { countDownText.text = ""; }
-        Debug.Log("update");
+       
+        if (!paused)
+        {
+            // Apply gravity and update the position
+            direction.y += gravity * Time.deltaTime;
+            Vector2 position = transform.position + direction * Time.deltaTime;
+            float y = poweredUp ? Mathf.Max(position.y, -3.2f) : position.y;
+            transform.position = new Vector2(position.x, y);
 
-        // Apply gravity and update the position
-        direction.y += gravity * Time.deltaTime;
-        Vector2 position = transform.position + direction * Time.deltaTime;
-        float y = poweredUp ? Mathf.Max(position.y, -3.2f) : position.y ; 
-        transform.position = new Vector2(position.x, y);
+            // Tilt the bird based on the direction
+            Vector3 rotation = transform.eulerAngles;
+            rotation.z = direction.y * tilt;
+            transform.eulerAngles = rotation;
 
-        // Tilt the bird based on the direction
-        Vector3 rotation = transform.eulerAngles;
-        rotation.z = direction.y * tilt;
-        transform.eulerAngles = rotation;
+        }
+
 
         if (poweredUp)
         {
