@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public GameObject gameOver;
     public HighScoreManager highScoreManager;
+
     public int score { get; private set; }
     public bool gameStarted { get; private set; }
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
         Time.timeScale = 1f;
         logo.SetActive(true);
+        scoreText.gameObject.SetActive(false);
 
 
         playButton.SetActive(true);
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(false);
         gameOver.SetActive(false);
         logo.SetActive(false);
+        scoreText.gameObject.SetActive(true);
 
         player.paused = false;
 

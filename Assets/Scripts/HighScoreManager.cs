@@ -31,7 +31,7 @@ public class HighScoreManager : MonoBehaviour
         else
         {
             highScoreText.text = "Previous High Score: " + highScore.ToString();
-            highScoreText.color = Color.white;
+            highScoreText.color = Color.black;
         }
     }
 
